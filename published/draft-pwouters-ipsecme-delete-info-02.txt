@@ -1,0 +1,448 @@
+
+
+
+
+Network                                                        A. Antony
+Internet-Draft                                                   secunet
+Intended status: Standards Track                               P. Kerpan
+Expires: 9 January 2025                                Cohesive Networks
+                                                              P. Wouters
+                                                                   Aiven
+                                                             8 July 2024
+
+
+          IKEv2 support for specifying a Delete notify reason
+                 draft-pwouters-ipsecme-delete-info-02
+
+Abstract
+
+   This document defines the DELETE_REASON Notify Message Status Type
+   Payload for the Internet Key Exchange Protocol Version 2 (IKEv2) to
+   support adding a reason for the deletion of the IKE or Child SA(s).
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 9 January 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 1]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   2
+     1.2.  Payload Format  . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Delete Reason Usage . . . . . . . . . . . . . . . . . . . . .   3
+   3.  DELETE_REASON Notify Status Message Payload format  . . . . .   3
+   4.  Initial Delete Reason Registry Values . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     6.1.  Delete Reason Notify  . . . . . . . . . . . . . . . . . .   5
+     6.2.  Delete Reason Registry  . . . . . . . . . . . . . . . . .   5
+     6.3.  Designated Expert Advise  . . . . . . . . . . . . . . . .   6
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .   6
+     7.1.  Libreswan . . . . . . . . . . . . . . . . . . . . . . . .   7
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+
+1.  Introduction
+
+   The IKEv2 [RFC7296] protocol supports sending a Delete Notify
+   message, but this message cannot convey the reason why a particular
+   Child SA or IKE SA is being deleted.  It can be useful to know why a
+   certain IPsec IKE SA or Child SA was deleted by the peer.  Sometimes,
+   when the peer's operator notices a specific SA is down, they have no
+   idea whether this is permanent or temporary problem, and have no idea
+   how long an outage might last.  The DELETE_REASON Notify message can
+   be added to any exchange that contains a Delete (42) payload
+   specifying an estimated duration and reason.  The initial Delete
+   Reason values are specified in Section 4.
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+1.2.  Payload Format
+
+   All multi-octet fields representing integers are laid out in big
+   endian order (also known as "most significant byte first", or
+   "network byte order").
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 2]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+2.  Delete Reason Usage
+
+   Whenever an IKE peer wishes to relay the reason for why it is
+   deleting an IKE SA or one or more IPsec SAs, it MAY include a
+   DELETE_REASON notify payload.  The notify payload contains a Reason
+   Type and an optional Reason Message Text.
+
+   A DELETE_REASON payload MUST be ignored if the exchange does not
+   contain a Delete payload.
+
+   If multiple Delete payloads are present, the DELETE_REASON message
+   applies to all of these.  If separate different reasons should be
+   conveyed for different Child SAs or IKE SA, those Delete messages and
+   their accompanied DELETE_REASON messages should be sent in separate
+   Informational Exchange messages.
+
+3.  DELETE_REASON Notify Status Message Payload format
+
+                       1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-----------------------------+-------------------------------+
+   | Next Payload  |C|  RESERVED   |         Payload Length        |
+   +---------------+---------------+-------------------------------+
+   |  Protocol ID  |   SPI Size    |      Notify Message Type      |
+   +---------------+---------------+-------------------------------+
+   |            Downtime           |    Delete Reason Type         |
+   +-------------------------------+-------------------------------+
+   ~                 Delete Reason Text                            ~
+   +-------------------------------+-------------------------------+
+
+   *  (C)ritical bit - MUST be 0.
+
+   *  Protocol ID (1 octet) - MUST be 0.  MUST be ignored if not 0.
+
+   *  SPI Size (1 octet) - MUST be 0.  MUST be ignored if not 0.
+
+   *  Notify Status Message Type (2 octets) - set to [TBD1]
+
+   *  Downtime (2 octets) A value in seconds for the expected downtime.
+      0 means unspecified.
+
+   *  Delete Reason Type (2 octets) - See Section 4
+
+   *  Delete Reason Text - May be empty.  Otherwise a non-NULL
+      terminated UTF-8 or ASCII text.
+
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 3]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+4.  Initial Delete Reason Registry Values
+
+   The following table describes the initial IKEv2 Notify Message Delete
+   Reason Registry values:
+
+   UNSPECIFIED  There is no matching Type.  Details should be in the
+      Delete Reason Text field
+
+   SERVICE_SHUTDOWN  The IKE service is being shut down
+
+   SERVICE_RESTART  The IKE service is being restarted
+
+   HOST_SHUTDOWN  The host running the IKE service is being shut down
+
+   HOST_RESTART  The host running the IKE service is being restarted
+
+   CONFIGURATION_CHILD_REMOVED  The Child SA was removed from the peer's
+      configuration
+
+   CONFIGURATION_IKE_REMOVED  The IKE SA was removed from the peer's
+      configuration
+
+   ADMINISTRATIVELY_DOWN  The SA was brought down by the operator
+
+   IDLE_TIMEOUT  The SA was inactive and brought down automatically by
+      the system
+
+   INITIAL_CONTACT_REPLACED  A new IKE SA with this peer was established
+      that signaled INITIAL_CONTACT
+
+   SIMULTANEOUS_REKEY  The peers ended up rekeying at once, and this SA
+      lost in favour of the other
+
+   RE_AUTHENTICATED  A new IKE SA with this peer was established for re-
+      authentication purposes
+
+   REDIRECTION_ACCEPTED  The redirection request was accepted and
+      established, obsoleting this old SA
+
+   LIFETIME_EXCEEDED  The SA reached its local lifetime counter (bytes
+      or seconds or packets) and was not rekeyed in time
+
+
+
+
+
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 4]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+5.  Security Considerations
+
+   Any timing information and reason should be treated as an
+   informational "best effort" message from the peer's operator.  A
+   DELETE_REASON message SHOULD NOT change the behaviour of the IKE
+   implementation other than logging the message or triggering an
+   informational or alert message.
+
+   As with all received free-form text data, the receiver MUST treat the
+   DELETE_REASON notify data as untrusted.  It SHOULD strip or replace
+   any characters not deemd regular text, for example the dollar sign
+   ($), braces, backticks and backslashes.  The Reason Message MUST NOT
+   be assumed to be safe to display.  It MUST NOT be assumed to be NULL
+   terminated, which means common string operations such as strlen()
+   MUST NOT be used without precautions.  After the data has been
+   processed and confirmed safe, it can be used for logging or as
+   messages in notification systems.
+
+6.  IANA Considerations
+
+   This document adds one new IKEv2 Notify Message Status Type value and
+   one new IKEv2 registry.
+
+6.1.  Delete Reason Notify
+
+   The following Notify Message Status is added:
+
+         Value   IKEv2 Notify Message Status Type    Reference
+         -----   ------------------------------    ---------------
+         [TBD1]   DELETE_REASON                    [this document]
+
+                                  Figure 1
+
+6.2.  Delete Reason Registry
+
+   This document requests IANA create the IKEv2 Notify Message Delete
+   Reason Registry under the Internet Key Exchange Version 2 (IKEv2)
+   Parameters Registry with the following fields and initial values:
+
+
+
+
+
+
+
+
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 5]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+         Type    Reason Name                    Reference
+         -----   ----------------------------   -------------------
+         0       UNSPECIFIED                    [this document]
+         1       SERVICE_SHUTDOWN               [this document]
+         2       SERVICE_RESTART                [this document]
+         3       HOST_SHUTDOWN                  [this document]
+         4       HOST_RESTART                   [this document]
+         5       CONFIGURATION_CHILD_REMOVED    [this document]
+         6       CONFIGURATION_IKE_REMOVED      [this document]
+         7       ADMINISTRATIVELY_DOWN          [this document]
+         8       IDLE_TIMEOUT                   [this document]
+         9       INITIAL_CONTACT_REPLACED       [this document]
+         10      SIMULTANEOUS_REKEY             [this document]
+         11      RE_AUTHENTICATED               [this document]
+         12      REDIRECTION_ACCEPTED           [this document]
+         13      LIFETIME_EXCEEDED              [this document]
+         14-255  Unassigned
+         256 - 65279 Unassigned
+         65280 - 65535 Private Use Values
+
+
+                                  Figure 2
+
+   The registry values 0-255 are assigned using the Standards Track
+   registration policy.
+
+   The registry values 256-65279 are assigned using the First Come First
+   Servce registration policy.
+
+   The registry values 65280-65535 are reserved for Private Use and
+   Experimental Use
+
+6.3.  Designated Expert Advise
+
+   The Designated Expert (DE) for this new registry should verify that
+   the entry makes sense within the IKEv2 protocol context and is
+   distinct from existing entries in the registry.
+
+7.  Implementation Status
+
+   [Note to RFC Editor: Please remove this section and the reference to
+   [RFC6982] before publication.]
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in [RFC7942].
+   The description of implementations in this section is intended to
+   assist the IETF in its decision processes in progressing drafts to
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 6]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+   RFCs.  Please note that the listing of any individual implementation
+   here does not imply endorsement by the IETF.  Furthermore, no effort
+   has been spent to verify the information presented here that was
+   supplied by IETF contributors.  This is not intended as, and must not
+   be construed to be, a catalog of available implementations or their
+   features.  Readers are advised to note that other implementations may
+   exist.
+
+   According to [RFC7942], "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+   Authors are requested to add a note to the RFC Editor at the top of
+   this section, advising the Editor to remove the entire section before
+   publication, as well as the reference to [RFC7942].
+
+7.1.  Libreswan
+
+   Organization:  The Libreswan Project
+
+   Name:  https://libreswan.org/
+
+   Description:  An initial IKE implementation using the Private Use
+      value 40960 for the Notify payload
+
+   Level of maturity:  Beta
+
+   Coverage:  Implements the draft's example reasons
+
+   Licensing:  GPLv2
+
+   Implementation experience:  TBD
+
+   Contact:  Libreswan Development: swan-dev@libreswan.org
+
+8.  References
+
+8.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 7]
+
+Internet-Draft  IKEv2 support for specifying a Delete no       July 2024
+
+
+   [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
+              Kivinen, "Internet Key Exchange Protocol Version 2
+              (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
+              2014, <https://www.rfc-editor.org/info/rfc7296>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+8.2.  Informative References
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982,
+              DOI 10.17487/RFC6982, July 2013,
+              <https://www.rfc-editor.org/info/rfc6982>.
+
+   [RFC7942]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", BCP 205,
+              RFC 7942, DOI 10.17487/RFC7942, July 2016,
+              <https://www.rfc-editor.org/info/rfc7942>.
+
+Authors' Addresses
+
+   Antony Antony
+   secunet Security Networks AG
+   Email: antony.antony@secunet.com
+
+
+   Patrick Kerpan
+   Cohesive Networks
+   Email: pjkerpan@cohesive.net
+
+
+   Paul Wouters
+   Aiven
+   Email: paul.wouters@aiven.io
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Antony, et al.           Expires 9 January 2025                 [Page 8]
