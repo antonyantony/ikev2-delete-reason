@@ -1,0 +1,31 @@
+IKEv2 support for specifying a Delete notify reason
+
+This is the working area for this Independent Internet-Draft.
+
+Contributions can be made by creating pull requests.
+The GitHub interface supports creating pull requests using the Edit (✏) button.
+
+* Latest Copy
+The latest version of the draft in HTML format is at:
+- [[https://antonyantony.github.io/ikev2-delete-reason/draft-pwouters-ipsecme-delete-info-latest.html][Editor's Copy]]
+# above URL is replaced by .github/workflows/generate.yaml
+# sed -i "s|klassert.github.io/eesp-ikev2|$USERNAME.github.io/$REPO_NAME|g"
+
+* IETF Datatracker Copy of IKEv2 Fragment Acknowledgment Extension
+- [[https://datatracker.ietf.org/doc/draft-pwouters-ipsecme-delete-info/][IETF Datatracker: draft-pwouters-ipsecme-delete-info]]
+
+- [[https://author-tools.ietf.org/api/iddiff?doc_1=draft-pwouters-ipsecme-delete-info&url_2=https://raw.githubusercontent.com/antonyantony/ikev2-delete-reason/refs/heads/gh-pages/draft-pwouters-ipsecme-delete-info.txt][Diff with latest submission]]
+
+* Command Line Usage
+
+Formatted text,HTML and xml versions of the draft can be built using *make*.
+
+#+BEGIN_SRC sh
+$ make
+ls -l draft/*-latest*
+#+END_SRC
+
+Command line usage requires that you have the necessary software installed. A
+local copy of emcas, which is used by the *make*. You are free to use an editor
+of your choice.  Alternatively "make DOCKER=yes" which will pull Docker instance
+and build txt,xml, and html page using the Docker instance.
