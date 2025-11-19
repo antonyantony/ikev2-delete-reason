@@ -19,7 +19,7 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc ipr="trust200902" updates="" obsoletes="" category="exp" docName="draft-pwouters-ipsecme-delete-info-03">
+<rfc ipr="trust200902" updates="" obsoletes="" category="exp" docName="draft-pwouters-ipsecme-delete-info-04">
   <front>
     <title>IKEv2 support for specifying a Delete notify reason</title>
     <author fullname="Antony Antony" initials="A." surname="Antony">
