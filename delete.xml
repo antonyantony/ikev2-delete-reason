@@ -110,8 +110,10 @@
 +---------------+---------------+-------------------------------+
 |  Protocol ID  |   SPI Size    |      Notify Message Type      |
 +---------------+---------------+-------------------------------+
-|    Delete Reason Type         |
-+-------------------------------+
+|    Delete Reason Type         | Delete Reason Text            |
++-------------------------------+                               |
+~                                                               ~
++-------------------------------+-------------------------------+
             ]]></artwork>
         </figure>
         <t>
@@ -121,6 +123,7 @@
             <t>SPI Size (1 octet) - MUST be 0. MUST be ignored if not 0.</t>
             <t>Notify Status Message Type (2 octets) - set to [TBD1]</t>
             <t>Delete Reason Type (2 octets) - See <xref target="Delete-Reasons"/></t>
+            <t>Delete Reason Text - Optional or a non-NULL terminated UTF-8.</t>
           </list>
         </t>
       </section>
@@ -182,6 +185,17 @@
     </section>
     </section>
 
+    <section anchor="Delete-Reason-text" title="Delete Reason Text">
+		<t>The DELETE_INFO notification defined in this document may optionally
+      include a Delete Reason Text field that provides additional diagnostic
+      information about the cause of the deletion. This field is intended
+      solely for operational visibility and troubleshooting.  The Notification
+      Data contains a UTF-8 encoded diagnostic string. The content and structure
+			of this string are implementation-defined. Peers MAY include a Delete
+			Reason, and receivers MUST be prepared to process or ignore it.
+		</t>
+    </section>
+
     <section title="Operational Considerations" anchor="op_consider">
     <t>The reason for supporting Deletion Reasons is for peer systems and their administrators to get a better idea of what is
     going on. Often in the field, people attempt to debug a failed connection only to find out much later that the configuration
@@ -194,7 +208,6 @@
     sending a high priority alert on the device. It might even make sense to keep a limited retry alive (for example hourly) in case
     the peer send such a message by mistake. This would allow a recovery - even if slowly.</t>
     </section>
-
 
     <section title="Security Considerations" anchor="sec_consider">
       <t>
@@ -246,7 +259,7 @@
       <t>The registry values 0-255 are assigned using the RFC Required registration policy.</t>
       <t>The registry values 256-65279 are assigned using the First Come First Servce registration policy.</t>
       <t>The registry values 65280-65535 are reserved for Private Use and Experimental Use</t>
-         
+
     </section>
     <section anchor="IANA-DE-" title="Designated Expert Advise">
     <t>The Designated Expert (DE) for this new registry should verify that the entry makes sense within
@@ -303,10 +316,6 @@
         </t>
       </section>
      </section>
-
-
-
-
 
   </middle>
   <back>
