@@ -7,6 +7,7 @@
 <!ENTITY RFC5890 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5890.xml">
 <!ENTITY RFC6698 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml">
 <!ENTITY RFC6982 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6982.xml">
+<!ENTITY RFC3629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml">
 <!ENTITY RFC7296 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7296.xml">
 <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
@@ -105,13 +106,15 @@
           <artwork align="left"><![CDATA[
                     1                   2                   3
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-----------------------------+-------------------------------+
++---------------+---------------+-------------------------------+
 | Next Payload  |C|  RESERVED   |         Payload Length        |
 +---------------+---------------+-------------------------------+
 |  Protocol ID  |   SPI Size    |      Notify Message Type      |
 +---------------+---------------+-------------------------------+
-|    Delete Reason Type         |
-+-------------------------------+
+|    Delete Reason Type         |                               |
++-------------------------------+                               +
+~              Delete Reason Text (variable, UTF-8)             ~
++---------------------------------------------------------------+
             ]]></artwork>
         </figure>
         <t>
@@ -121,6 +124,11 @@
             <t>SPI Size (1 octet) - MUST be 0. MUST be ignored if not 0.</t>
             <t>Notify Status Message Type (2 octets) - set to [TBD1]</t>
             <t>Delete Reason Type (2 octets) - See <xref target="Delete-Reasons"/></t>
+            <t>Delete Reason Text (variable) - Optional UTF-8
+               encoded <xref target="RFC3629"/> diagnostic
+               string.  NUL termination MUST NOT be included.
+               MAY be absent, in which case the Notification
+               Data ends after the Delete Reason Type.</t>
           </list>
         </t>
       </section>
@@ -182,6 +190,45 @@
     </section>
     </section>
 
+    <section anchor="Delete-Reason-text" title="Delete Reason Text">
+      <t>
+        The Delete Reason Type values defined in this
+        document cover anticipated operational causes.
+        However, operators may be required to terminate
+        connections for reasons no finite registry can
+        anticipate: changes in applicable law, trade
+        restrictions, regulatory requirements, contractual
+        obligations imposed by third parties, or force
+        majeure events requiring immediate and permanent
+        termination.  In such situations,
+        ADMINISTRATIVELY_DOWN conveys that a connection
+        is disabled but nothing more -- the peer's
+        administrator cannot determine from the code
+        alone whether this is a transient outage or a
+        permanent legal termination requiring no further
+        retry.  The Delete Reason Text field allows the
+        operator to convey this context in a form a human
+        administrator can read, act upon, and escalate
+        through the appropriate channels.
+      </t>
+      <t>
+        The DELETE_REASON notification defined in this
+        document MAY include a Delete Reason Text field
+        that provides additional human-readable diagnostic
+        information about the cause of the deletion.  The
+        text is solely for operational visibility and
+        troubleshooting; it MUST NOT be used to drive
+        automated behaviour.  Receivers MUST be prepared
+        to process or silently ignore the field.
+      </t>
+      <t>
+        The Delete Reason Text is a UTF-8 encoded
+        <xref target="RFC3629"/> string.  NUL termination
+        MUST NOT be included.  The content and structure
+        of the string are implementation-defined.
+      </t>
+    </section>
+
     <section title="Operational Considerations" anchor="op_consider">
     <t>The reason for supporting Deletion Reasons is for peer systems and their administrators to get a better idea of what is
     going on. Often in the field, people attempt to debug a failed connection only to find out much later that the configuration
@@ -193,8 +240,22 @@
     in "standby mode" and prevent further attempts for IKE SA or Child SA connections. Such behaviour SHOULD NOT be done without
     sending a high priority alert on the device. It might even make sense to keep a limited retry alive (for example hourly) in case
     the peer send such a message by mistake. This would allow a recovery - even if slowly.</t>
-    </section>
 
+    <t>Consider an operator required to terminate
+    connections to specific peers following a change in
+    applicable regulatory requirements.  Sending
+    ADMINISTRATIVELY_DOWN alone leaves the peer's
+    administrator uncertain: is this a billing issue, a
+    maintenance window, or a permanent legal decision?
+    A Delete Reason Text such as: "Connection permanently
+    terminated: compliance with applicable trade
+    regulations effective [date].  No reconnection
+    attempts should be made." allows the peer's
+    administrator to immediately understand the nature
+    and permanence of the termination, cease recovery
+    attempts, and escalate through the appropriate
+    channels.</t>
+    </section>
 
     <section title="Security Considerations" anchor="sec_consider">
       <t>
@@ -246,7 +307,7 @@
       <t>The registry values 0-255 are assigned using the RFC Required registration policy.</t>
       <t>The registry values 256-65279 are assigned using the First Come First Served registration policy.</t>
       <t>The registry values 65280-65535 are reserved for Private Use and Experimental Use</t>
-         
+
     </section>
     <section anchor="IANA-DE-" title="Designated Expert Advise">
     <t>The Designated Expert (DE) for this new registry should verify that the entry makes sense within
@@ -304,14 +365,11 @@
       </section>
      </section>
 
-
-
-
-
   </middle>
   <back>
     <references title="Normative References">
      &RFC2119;
+     &RFC3629;
      &RFC7296;
      &RFC8174;
     </references>
