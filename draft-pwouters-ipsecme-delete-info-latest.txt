@@ -76,7 +76,7 @@ Table of Contents
      4.8.  INITIAL_CONTACT_REPLACED  . . . . . . . . . . . . . . . .   5
      4.9.  REPLACED_SA . . . . . . . . . . . . . . . . . . . . . . .   5
      4.10. LIFETIME_EXCEEDED . . . . . . . . . . . . . . . . . . . .   5
-   5.  Delete Reason text  . . . . . . . . . . . . . . . . . . . . .   6
+   5.  Delete Reason Text  . . . . . . . . . . . . . . . . . . . . .   6
    6.  Operational Considerations  . . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
@@ -153,9 +153,9 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    +---------------+---------------+-------------------------------+
    |  Protocol ID  |   SPI Size    |      Notify Message Type      |
    +---------------+---------------+-------------------------------+
-   |    Delete Reason Type         |                               |
+   |    Delete Reason Type         | Delete Reason Text            |
    +-------------------------------+                               |
-   ~                 Delete Reason Text                            ~
+   ~                                                               ~
    +-------------------------------+-------------------------------+
 
    *  (C)ritical bit - MUST be 0.
@@ -282,7 +282,7 @@ Antony, et al.             Expires 24 May 2026                  [Page 5]
 Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
 
-5.  Delete Reason text
+5.  Delete Reason Text
 
    The DELETE_INFO notification defined in this document may optionally
    include a Delete Reason Text field that provides additional
