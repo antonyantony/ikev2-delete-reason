@@ -5,10 +5,10 @@
 Network                                                        A. Antony
 Internet-Draft                                                   secunet
 Intended status: Experimental                                  P. Kerpan
-Expires: 24 May 2026                                   Cohesive Networks
+Expires: 13 September 2026                             Cohesive Networks
                                                               P. Wouters
                                                                    Aiven
-                                                        20 November 2025
+                                                           12 March 2026
 
 
           IKEv2 support for specifying a Delete notify reason
@@ -35,11 +35,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 May 2026.
+   This Internet-Draft will expire on 13 September 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Antony, et al.             Expires 24 May 2026                  [Page 1]
+Antony, et al.          Expires 13 September 2026               [Page 1]
 
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
 
 
 Table of Contents
@@ -68,27 +68,28 @@ Table of Contents
    4.  Initial Delete Reason Registry Values . . . . . . . . . . . .   4
      4.1.  SERVICE_SHUTDOWN  . . . . . . . . . . . . . . . . . . . .   4
      4.2.  SERVICE_RESTART . . . . . . . . . . . . . . . . . . . . .   4
-     4.3.  CONFIGURATION_CHILD_DELETED . . . . . . . . . . . . . . .   4
-     4.4.  CONFIGURATION_IKE_DELETED . . . . . . . . . . . . . . . .   4
+     4.3.  CONFIGURATION_CHILD_DELETED . . . . . . . . . . . . . . .   5
+     4.4.  CONFIGURATION_IKE_DELETED . . . . . . . . . . . . . . . .   5
      4.5.  CONFIGURATION_IKE_UPDATED . . . . . . . . . . . . . . . .   5
      4.6.  ADMINISTRATIVELY_DOWN . . . . . . . . . . . . . . . . . .   5
      4.7.  IDLE_TIMEOUT  . . . . . . . . . . . . . . . . . . . . . .   5
-     4.8.  INITIAL_CONTACT_REPLACED  . . . . . . . . . . . . . . . .   5
-     4.9.  REPLACED_SA . . . . . . . . . . . . . . . . . . . . . . .   5
-     4.10. LIFETIME_EXCEEDED . . . . . . . . . . . . . . . . . . . .   5
+     4.8.  INITIAL_CONTACT_REPLACED  . . . . . . . . . . . . . . . .   6
+     4.9.  REPLACED_SA . . . . . . . . . . . . . . . . . . . . . . .   6
+     4.10. LIFETIME_EXCEEDED . . . . . . . . . . . . . . . . . . . .   6
    5.  Delete Reason Text  . . . . . . . . . . . . . . . . . . . . .   6
-   6.  Operational Considerations  . . . . . . . . . . . . . . . . .   6
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-     8.1.  Delete Reason Notify  . . . . . . . . . . . . . . . . . .   6
-     8.2.  Delete Reason Registry  . . . . . . . . . . . . . . . . .   7
-     8.3.  Designated Expert Advise  . . . . . . . . . . . . . . . .   7
-   9.  Implementation Status . . . . . . . . . . . . . . . . . . . .   8
-     9.1.  Libreswan . . . . . . . . . . . . . . . . . . . . . . . .   8
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+     5.1.  Language of the Delete Reason Text  . . . . . . . . . . .   6
+   6.  Operational Considerations  . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Delete Reason Notify  . . . . . . . . . . . . . . . . . .   8
+     8.2.  Delete Reason Registry  . . . . . . . . . . . . . . . . .   8
+     8.3.  Designated Expert Advise  . . . . . . . . . . . . . . . .   9
+   9.  Implementation Status . . . . . . . . . . . . . . . . . . . .   9
+     9.1.  Libreswan . . . . . . . . . . . . . . . . . . . . . . . .   9
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  10
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  10
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Introduction
 
@@ -108,10 +109,9 @@ Table of Contents
 
 
 
-
-Antony, et al.             Expires 24 May 2026                  [Page 2]
+Antony, et al.          Expires 13 September 2026               [Page 2]
 
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
 
 
 1.1.  Requirements Language
@@ -148,27 +148,29 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
                        1                   2                   3
    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-----------------------------+-------------------------------+
+   +---------------+---------------+-------------------------------+
    | Next Payload  |C|  RESERVED   |         Payload Length        |
    +---------------+---------------+-------------------------------+
    |  Protocol ID  |   SPI Size    |      Notify Message Type      |
    +---------------+---------------+-------------------------------+
-   |    Delete Reason Type         | Delete Reason Text            |
-   +-------------------------------+                               |
-   ~                                                               ~
-   +-------------------------------+-------------------------------+
+   |    Delete Reason Type         |  Lang Tag Len |               |
+   +-------------------------------+---------------+               +
+   ~                  Language Tag (variable)                      ~
+   +---------------------------------------------------------------+
+   ~              Delete Reason Text (variable, UTF-8)             ~
+   +---------------------------------------------------------------+
 
    *  (C)ritical bit - MUST be 0.
 
-   *  Protocol ID (1 octet) - MUST be 0.  MUST be ignored if not 0.
 
 
 
-
-Antony, et al.             Expires 24 May 2026                  [Page 3]
+Antony, et al.          Expires 13 September 2026               [Page 3]
 
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
 
+
+   *  Protocol ID (1 octet) - MUST be 0.  MUST be ignored if not 0.
 
    *  SPI Size (1 octet) - MUST be 0.  MUST be ignored if not 0.
 
@@ -176,7 +178,21 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
    *  Delete Reason Type (2 octets) - See Section 4
 
-   *  Delete Reason Text - Optional or a non-NULL terminated UTF-8.
+   *  Language Tag Length (1 octet) - The length in octets of the
+      Language Tag field that follows.  A value of zero indicates that
+      no Language Tag is present and the Delete Reason Text, if any, has
+      no declared language.
+
+   *  Language Tag (variable) - A language tag as defined in [RFC5646],
+      identifying the natural language of the Delete Reason Text.  MUST
+      be omitted when Language Tag Length is zero.  Implementations
+      SHOULD use "en" when the text is in English.
+
+   *  Delete Reason Text (variable) - Optional UTF-8 encoded [RFC3629]
+      diagnostic string.  NUL termination MUST NOT be included.  MAY be
+      absent, in which case the Notification Data ends after the
+      Language Tag (or after the Delete Reason Type when Language Tag
+      Length is zero).
 
 4.  Initial Delete Reason Registry Values
 
@@ -200,6 +216,16 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    attempted, although there might be a brief outage trying to do so.
    Session Resumption tickets [RFC5723] are unlikly to be usable.
 
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 4]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
 4.3.  CONFIGURATION_CHILD_DELETED
 
    The configuration for the specific Child SA parameters has been
@@ -218,13 +244,6 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    The configuration for the specific IKE SA peer has been removed.
    This implies the peer will not accept a new connection with the exact
    same IKE parameters as those that were just in use.
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 4]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
-
 
 4.5.  CONFIGURATION_IKE_UPDATED
 
@@ -250,6 +269,19 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    The instance of the IKE SA or Child SA has been disabled due to
    inactivity.  This implies reconnecting again is possible.
 
+
+
+
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 5]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
 4.8.  INITIAL_CONTACT_REPLACED
 
    A new IKE SA with this peer was established that signaled
@@ -272,26 +304,52 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    The IKE SA or Child SA reached its local lifetime counter (bytes or
    seconds or packets) and was not rekeyed in time.
 
-
-
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 5]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
-
-
 5.  Delete Reason Text
 
-   The DELETE_INFO notification defined in this document may optionally
-   include a Delete Reason Text field that provides additional
-   diagnostic information about the cause of the deletion.  This field
-   is intended solely for operational visibility and troubleshooting.
-   The Notification Data contains a UTF-8 encoded diagnostic string.
-   The content and structure of this string are implementation-defined.
-   Peers MAY include a Delete Reason, and receivers MUST be prepared to
-   process or ignore it.
+   The DELETE_REASON notification defined in this document MAY
+   optionally include a Delete Reason Text field that provides
+   additional human-readable diagnostic information about the cause of
+   the deletion.  The text is solely for operational visibility and
+   troubleshooting; it MUST NOT be used to drive automated behaviour.
+   Receivers MUST be prepared to process or silently ignore the field.
+
+   The Delete Reason Text is a UTF-8 encoded [RFC3629] string.  NUL
+   termination MUST NOT be included.  The content and structure of the
+   string are implementation-defined.
+
+5.1.  Language of the Delete Reason Text
+
+   IKEv2 [RFC7296] does not provide a mechanism for negotiating a
+   natural language for diagnostic strings.  To allow receivers to
+   correctly interpret or display the Delete Reason Text, senders MAY
+   include a Language Tag identifying the language of the text.  The
+   Language Tag MUST conform to [RFC5646].
+
+
+
+
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 6]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
+   When a Language Tag is present (Language Tag Length is non-zero), the
+   Delete Reason Text is in the declared language.  When no Language Tag
+   is present (Language Tag Length is zero), the language of the text is
+   unspecified.  Senders that include a Delete Reason Text SHOULD
+   include a Language Tag.  Senders that use English text SHOULD set the
+   Language Tag to "en".
+
+   Receivers MUST NOT reject a DELETE_REASON notification solely because
+   they do not support the declared language.  A receiver that does not
+   recognise the language tag MAY display the raw UTF-8 string or MAY
+   suppress display of the text entirely.  A receiver that cannot parse
+   the Language Tag field MUST ignore the entire Delete Reason Text.
 
 6.  Operational Considerations
 
@@ -325,18 +383,20 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    This document adds one new IKEv2 Notify Message Status Type value and
    one new IKEv2 registry.
 
+
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 7]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
 8.1.  Delete Reason Notify
 
    The following Notify Message Status is added:
-
-
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 6]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
-
 
          Value   IKEv2 Notify Message Status Type    Reference
          -----   ------------------------------    ---------------
@@ -379,20 +439,22 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
    The registry values 65280-65535 are reserved for Private Use and
    Experimental Use
 
+
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 8]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
 8.3.  Designated Expert Advise
 
    The Designated Expert (DE) for this new registry should verify that
    the entry makes sense within the IKEv2 protocol context and is
    distinct from existing entries in the registry.
-
-
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 7]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
-
 
 9.  Implementation Status
 
@@ -436,19 +498,19 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
    Level of maturity:  Beta
 
+
+
+
+Antony, et al.          Expires 13 September 2026               [Page 9]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
    Coverage:  Implements the draft's example reasons
 
    Licensing:  GPLv2
 
    Implementation experience:  TBD
-
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 8]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
-
 
    Contact:  Libreswan Development: swan-dev@libreswan.org
 
@@ -460,6 +522,14 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
+              2003, <https://www.rfc-editor.org/info/rfc3629>.
+
+   [RFC5646]  Phillips, A., Ed. and M. Davis, Ed., "Tags for Identifying
+              Languages", BCP 47, RFC 5646, DOI 10.17487/RFC5646,
+              September 2009, <https://www.rfc-editor.org/info/rfc5646>.
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -482,6 +552,16 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
               DOI 10.17487/RFC5723, January 2010,
               <https://www.rfc-editor.org/info/rfc5723>.
 
+
+
+
+
+
+Antony, et al.          Expires 13 September 2026              [Page 10]
+
+Internet-Draft  IKEv2 support for specifying a Delete no      March 2026
+
+
    [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", RFC 6982,
               DOI 10.17487/RFC6982, July 2013,
@@ -497,13 +577,6 @@ Authors' Addresses
    Antony Antony
    secunet Security Networks AG
    Email: antony.antony@secunet.com
-
-
-
-
-Antony, et al.             Expires 24 May 2026                  [Page 9]
-
-Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
 
    Patrick Kerpan
@@ -540,21 +613,4 @@ Internet-Draft  IKEv2 support for specifying a Delete no   November 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Antony, et al.             Expires 24 May 2026                 [Page 10]
+Antony, et al.          Expires 13 September 2026              [Page 11]
