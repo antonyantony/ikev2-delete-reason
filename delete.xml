@@ -8,6 +8,7 @@
 <!ENTITY RFC6698 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6698.xml">
 <!ENTITY RFC6982 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6982.xml">
 <!ENTITY RFC3629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3629.xml">
+<!ENTITY RFC5646 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5646.xml">
 <!ENTITY RFC7296 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7296.xml">
 <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
 <!ENTITY RFC7942 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7942.xml">
@@ -111,8 +112,10 @@
 +---------------+---------------+-------------------------------+
 |  Protocol ID  |   SPI Size    |      Notify Message Type      |
 +---------------+---------------+-------------------------------+
-|    Delete Reason Type         |                               |
-+-------------------------------+                               +
+|    Delete Reason Type         |  Lang Tag Len |               |
++-------------------------------+---------------+               +
+~                  Language Tag (variable)                      ~
++---------------------------------------------------------------+
 ~              Delete Reason Text (variable, UTF-8)             ~
 +---------------------------------------------------------------+
             ]]></artwork>
@@ -124,11 +127,24 @@
             <t>SPI Size (1 octet) - MUST be 0. MUST be ignored if not 0.</t>
             <t>Notify Status Message Type (2 octets) - set to [TBD1]</t>
             <t>Delete Reason Type (2 octets) - See <xref target="Delete-Reasons"/></t>
+            <t>Language Tag Length (1 octet) - The length in
+               octets of the Language Tag field that follows.
+               A value of zero indicates that no Language Tag
+               is present and the Delete Reason Text, if any,
+               has no declared language.</t>
+            <t>Language Tag (variable) - A language tag as
+               defined in <xref target="RFC5646"/>, identifying
+               the natural language of the Delete Reason Text.
+               MUST be omitted when Language Tag Length is zero.
+               Implementations SHOULD use "en" when the text
+               is in English.</t>
             <t>Delete Reason Text (variable) - Optional UTF-8
                encoded <xref target="RFC3629"/> diagnostic
                string.  NUL termination MUST NOT be included.
                MAY be absent, in which case the Notification
-               Data ends after the Delete Reason Type.</t>
+               Data ends after the Language Tag (or after the
+               Delete Reason Type when Language Tag Length is
+               zero).</t>
           </list>
         </t>
       </section>
@@ -227,6 +243,37 @@
         MUST NOT be included.  The content and structure
         of the string are implementation-defined.
       </t>
+      <section anchor="Delete-Reason-language"
+               title="Language of the Delete Reason Text">
+        <t>
+          IKEv2 <xref target="RFC7296"/> does not provide a
+          mechanism for negotiating a natural language for
+          diagnostic strings.  To allow receivers to correctly
+          interpret or display the Delete Reason Text, senders
+          MAY include a Language Tag identifying the language
+          of the text.  The Language Tag MUST conform to
+          <xref target="RFC5646"/>.
+        </t>
+        <t>
+          When a Language Tag is present (Language Tag Length
+          is non-zero), the Delete Reason Text is in the
+          declared language.  When no Language Tag is present
+          (Language Tag Length is zero), the language of the
+          text is unspecified.  Senders that include a Delete
+          Reason Text SHOULD include a Language Tag.  Senders
+          that use English text SHOULD set the Language Tag
+          to "en".
+        </t>
+        <t>
+          Receivers MUST NOT reject a DELETE_REASON
+          notification solely because they do not support the
+          declared language.  A receiver that does not
+          recognise the language tag MAY display the raw
+          UTF-8 string or MAY suppress display of the text
+          entirely.  A receiver that cannot parse the Language
+          Tag field MUST ignore the entire Delete Reason Text.
+        </t>
+      </section>
     </section>
 
     <section title="Operational Considerations" anchor="op_consider">
@@ -370,6 +417,7 @@
     <references title="Normative References">
      &RFC2119;
      &RFC3629;
+     &RFC5646;
      &RFC7296;
      &RFC8174;
     </references>
