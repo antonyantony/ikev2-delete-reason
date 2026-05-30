@@ -15,23 +15,23 @@
        a reason for the deletion of the IKE or Child SA(s).
        
     " name="description">
-<meta content="xml2rfc 3.32.0" name="generator">
+<meta content="xml2rfc 3.33.0" name="generator">
 <meta content="IKEv2" name="keyword">
 <meta content="IPsec" name="keyword">
 <meta content="draft-pwouters-ipsecme-delete-info-04" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.32.0
+  xml2rfc 3.33.0
     Python 3.12.3
     ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.2
-    lxml 6.0.2
-    platformdirs 4.9.2
+    lxml 6.1.1
+    platformdirs 4.9.6
     pycountry 26.2.16
     PyYAML 6.0.1
     requests 2.31.0
-    wcwidth 0.6.0
+    wcwidth 0.7.0
 -->
 <link href="draft-pwouters-ipsecme-delete-info-04.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1222,11 +1222,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">IKEv2 support for specifying a Delete no</td>
-<td class="right">March 2026</td>
+<td class="right">May 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Antony, et al.</td>
-<td class="center">Expires 13 September 2026</td>
+<td class="center">Expires 1 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1239,12 +1239,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-pwouters-ipsecme-delete-info-04</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-12" class="published">12 March 2026</time>
+<time datetime="2026-05-30" class="published">30 May 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-13">13 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-01">1 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1289,7 +1289,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1520,24 +1520,27 @@ li > p:last-of-type:only-child {
           <p id="section-3-2.5.1">Delete Reason Type (2 octets) - See <a href="#Delete-Reasons" class="auto internal xref">Section 4</a><a href="#section-3-2.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.6">
-          <p id="section-3-2.6.1">Language Tag Length (1 octet) - The length in octets of the
-               Language Tag field that follows.  A value of zero indicates
-               that no Language Tag is present and the Delete Reason Text,
-               if any, has no declared language.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.6.1">Language Tag Length (1 octet) - The length in
+               octets of the Language Tag field that follows.
+               A value of zero indicates that no Language Tag
+               is present and the Delete Reason Text, if any,
+               has no declared language.<a href="#section-3-2.6.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.7">
-          <p id="section-3-2.7.1">Language Tag (variable) - A language tag as defined in
-               <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span>, identifying the natural language
-               of the Delete Reason Text.  MUST be omitted when Language
-               Tag Length is zero.  Implementations SHOULD use "en" when
-               the text is in English.<a href="#section-3-2.7.1" class="pilcrow">¶</a></p>
+          <p id="section-3-2.7.1">Language Tag (variable) - A language tag as
+               defined in <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span>, identifying
+               the natural language of the Delete Reason Text.
+               MUST be omitted when Language Tag Length is zero.
+               Implementations SHOULD use "en" when the text
+               is in English.<a href="#section-3-2.7.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-2.8">
-          <p id="section-3-2.8.1">Delete Reason Text (variable) - Optional UTF-8 encoded
-               <span>[<a href="#RFC3629" class="cite xref">RFC3629</a>]</span> diagnostic string.  NUL
-               termination MUST NOT be included.  MAY be absent, in which
-               case the Notification Data ends after the Language Tag (or
-               after the Delete Reason Type when Language Tag Length is
+          <p id="section-3-2.8.1">Delete Reason Text (variable) - Optional UTF-8
+               encoded <span>[<a href="#RFC3629" class="cite xref">RFC3629</a>]</span> diagnostic
+               string.  NUL termination MUST NOT be included.
+               MAY be absent, in which case the Notification
+               Data ends after the Language Tag (or after the
+               Delete Reason Type when Language Tag Length is
                zero).<a href="#section-3-2.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
@@ -1594,7 +1597,7 @@ li > p:last-of-type:only-child {
        new connection with the exact same IKE parameters as those that were just in use.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="CONFIGURATION_IKE_UDPDATED">
+<div id="CONFIGURATION_IKE_UPDATED">
 <section id="section-4.5">
         <h3 id="name-configuration_ike_updated">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-configuration_ike_updated" class="section-name selfRef">CONFIGURATION_IKE_UPDATED</a>
@@ -1659,41 +1662,68 @@ li > p:last-of-type:only-child {
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-delete-reason-text" class="section-name selfRef">Delete Reason Text</a>
       </h2>
 <p id="section-5-1">
-        The DELETE_REASON notification defined in this document MAY optionally
-        include a Delete Reason Text field that provides additional
-        human-readable diagnostic information about the cause of the deletion.
-        The text is solely for operational visibility and troubleshooting; it
-        MUST NOT be used to drive automated behaviour.  Receivers MUST be
-        prepared to process or silently ignore the field.<a href="#section-5-1" class="pilcrow">¶</a></p>
+        The Delete Reason Type values defined in this
+        document cover anticipated operational causes.
+        However, operators may be required to terminate
+        connections for reasons no finite registry can
+        anticipate: changes in applicable law, trade
+        restrictions, regulatory requirements, contractual
+        obligations imposed by third parties, or force
+        majeure events requiring immediate and permanent
+        termination.  In such situations,
+        ADMINISTRATIVELY_DOWN conveys that a connection
+        is disabled but nothing more -- the peer's
+        administrator cannot determine from the code
+        alone whether this is a transient outage or a
+        permanent legal termination requiring no further
+        retry.  The Delete Reason Text field allows the
+        operator to convey this context in a form a human
+        administrator can read, act upon, and escalate
+        through the appropriate channels.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">
-        The Delete Reason Text is a UTF-8 encoded <span>[<a href="#RFC3629" class="cite xref">RFC3629</a>]</span>
-        string.  NUL termination MUST NOT be included.  The content and
-        structure of the string are implementation-defined.<a href="#section-5-2" class="pilcrow">¶</a></p>
+        The DELETE_REASON notification defined in this
+        document MAY include a Delete Reason Text field
+        that provides additional human-readable diagnostic
+        information about the cause of the deletion.  The
+        text is solely for operational visibility and
+        troubleshooting; it MUST NOT be used to drive
+        automated behaviour.  Receivers MUST be prepared
+        to process or silently ignore the field.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">
+        The Delete Reason Text is a UTF-8 encoded
+        <span>[<a href="#RFC3629" class="cite xref">RFC3629</a>]</span> string.  NUL termination
+        MUST NOT be included.  The content and structure
+        of the string are implementation-defined.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <div id="Delete-Reason-language">
 <section id="section-5.1">
         <h3 id="name-language-of-the-delete-reas">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-language-of-the-delete-reas" class="section-name selfRef">Language of the Delete Reason Text</a>
         </h3>
 <p id="section-5.1-1">
-          IKEv2 <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span> does not provide a mechanism for
-          negotiating a natural language for diagnostic strings.  To allow
-          receivers to correctly interpret or display the Delete Reason Text,
-          senders MAY include a Language Tag identifying the language of the
-          text.  The Language Tag MUST conform to <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+          IKEv2 <span>[<a href="#RFC7296" class="cite xref">RFC7296</a>]</span> does not provide a
+          mechanism for negotiating a natural language for
+          diagnostic strings.  To allow receivers to correctly
+          interpret or display the Delete Reason Text, senders
+          MAY include a Language Tag identifying the language
+          of the text.  The Language Tag MUST conform to
+          <span>[<a href="#RFC5646" class="cite xref">RFC5646</a>]</span>.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">
-          When a Language Tag is present (Language Tag Length is non-zero),
-          the Delete Reason Text is in the declared language.  When no
-          Language Tag is present (Language Tag Length is zero), the language
-          of the text is unspecified.  Senders that include a Delete Reason
-          Text SHOULD include a Language Tag.  Senders that use English text
-          SHOULD set the Language Tag to "en".<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+          When a Language Tag is present (Language Tag Length
+          is non-zero), the Delete Reason Text is in the
+          declared language.  When no Language Tag is present
+          (Language Tag Length is zero), the language of the
+          text is unspecified.  Senders that include a Delete
+          Reason Text SHOULD include a Language Tag.  Senders
+          that use English text SHOULD set the Language Tag
+          to "en".<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">
-          Receivers MUST NOT reject a DELETE_REASON notification solely
-          because they do not support the declared language.  A receiver
-          that does not recognise the language tag MAY display the raw
-          UTF-8 string or MAY suppress display of the text entirely.
-          A receiver that cannot parse the Language Tag field MUST
-          ignore the entire Delete Reason Text.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+          Receivers MUST NOT reject a DELETE_REASON
+          notification solely because they do not support the
+          declared language.  A receiver that does not
+          recognise the language tag MAY display the raw
+          UTF-8 string or MAY suppress display of the text
+          entirely.  A receiver that cannot parse the Language
+          Tag field MUST ignore the entire Delete Reason Text.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1712,6 +1742,20 @@ li > p:last-of-type:only-child {
     in "standby mode" and prevent further attempts for IKE SA or Child SA connections. Such behaviour SHOULD NOT be done without
     sending a high priority alert on the device. It might even make sense to keep a limited retry alive (for example hourly) in case
     the peer send such a message by mistake. This would allow a recovery - even if slowly.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">Consider an operator required to terminate
+    connections to specific peers following a change in
+    applicable regulatory requirements.  Sending
+    ADMINISTRATIVELY_DOWN alone leaves the peer's
+    administrator uncertain: is this a billing issue, a
+    maintenance window, or a permanent legal decision?
+    A Delete Reason Text such as: "Connection permanently
+    terminated: compliance with applicable trade
+    regulations effective [date].  No reconnection
+    attempts should be made." allows the peer's
+    administrator to immediately understand the nature
+    and permanence of the termination, cease recovery
+    attempts, and escalate through the appropriate
+    channels.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec_consider">
@@ -1774,10 +1818,10 @@ li > p:last-of-type:only-child {
       5       CONFIGURATION_IKE_UPDATED      [this document]
       6       ADMINISTRATIVELY_DOWN          [this document]
       7       IDLE_TIMEOUT                   [this document]
-      9       INITIAL_CONTACT_REPLACED       [this document]
-      10      REPLACED_SA                    [this document]
-      11      LIFETIME_EXCEEDED              [this document]
-      12-255  Unassigned
+      8       INITIAL_CONTACT_REPLACED       [this document]
+      9       REPLACED_SA                    [this document]
+      10      LIFETIME_EXCEEDED              [this document]
+      11-255  Unassigned
       256 - 65279 Unassigned
       65280 - 65535 Private Use Values
 
@@ -1786,7 +1830,7 @@ li > p:last-of-type:only-child {
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a></figcaption></figure>
 </div>
 <p id="section-8.2-3">The registry values 0-255 are assigned using the RFC Required registration policy.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
-<p id="section-8.2-4">The registry values 256-65279 are assigned using the First Come First Servce registration policy.<a href="#section-8.2-4" class="pilcrow">¶</a></p>
+<p id="section-8.2-4">The registry values 256-65279 are assigned using the First Come First Served registration policy.<a href="#section-8.2-4" class="pilcrow">¶</a></p>
 <p id="section-8.2-5">The registry values 65280-65535 are reserved for Private Use and Experimental Use<a href="#section-8.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
