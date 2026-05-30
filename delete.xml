@@ -153,7 +153,7 @@
     <t>The configuration for the specific IKE SA peer has been removed. This implies the peer will not accept a
        new connection with the exact same IKE parameters as those that were just in use.</t>
     </section>
-    <section anchor="CONFIGURATION_IKE_UDPDATED" title="CONFIGURATION_IKE_UPDATED">
+    <section anchor="CONFIGURATION_IKE_UPDATED" title="CONFIGURATION_IKE_UPDATED">
     <t>The configuration for the specific IKE SA peer has been updated. Depending on the configuration change, this
        might require an update to the location configuration or not. For example, an updated PreSharedKey would require
        a configuration update. A change of accepted algorithms might mean that the IKE SA can be established with a
@@ -234,17 +234,17 @@
       5       CONFIGURATION_IKE_UPDATED      [this document]
       6       ADMINISTRATIVELY_DOWN          [this document]
       7       IDLE_TIMEOUT                   [this document]
-      9       INITIAL_CONTACT_REPLACED       [this document]
-      10      REPLACED_SA                    [this document]
-      11      LIFETIME_EXCEEDED              [this document]
-      12-255  Unassigned
+      8       INITIAL_CONTACT_REPLACED       [this document]
+      9       REPLACED_SA                    [this document]
+      10      LIFETIME_EXCEEDED              [this document]
+      11-255  Unassigned
       256 - 65279 Unassigned
       65280 - 65535 Private Use Values
 
             ]]></artwork>
       </figure>
       <t>The registry values 0-255 are assigned using the RFC Required registration policy.</t>
-      <t>The registry values 256-65279 are assigned using the First Come First Servce registration policy.</t>
+      <t>The registry values 256-65279 are assigned using the First Come First Served registration policy.</t>
       <t>The registry values 65280-65535 are reserved for Private Use and Experimental Use</t>
          
     </section>
