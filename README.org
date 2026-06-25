@@ -11,7 +11,7 @@ The latest version of the draft in HTML format is at:
 # above URL is replaced by .github/workflows/generate.yaml
 # sed -i "s|klassert.github.io/eesp-ikev2|$USERNAME.github.io/$REPO_NAME|g"
 
-* IETF Datatracker Copy of IKEv2 Fragment Acknowledgment Extension
+* IETF Datatracker Copy of IKEv2 support for specifying a Delete notify reason
 - [[https://datatracker.ietf.org/doc/draft-pwouters-ipsecme-delete-info/][IETF Datatracker: draft-pwouters-ipsecme-delete-info]]
 
 - [[https://author-tools.ietf.org/api/iddiff?doc_1=draft-pwouters-ipsecme-delete-info&url_2=https://antonyantony.github.io/ikev2-delete-reason/draft-pwouters-ipsecme-delete-info-latest.txt][Diff with latest submission]]
